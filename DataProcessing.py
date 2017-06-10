@@ -110,14 +110,17 @@ print('Building test set ...')
 sample['parcelid'] = sample['ParcelId'] 
 df_test = sample.merge(prop, on = 'parcelid', how = 'left')
 
-df_test_Oct = df_test_Oct['month'] = 10
+df_test_Oct = df_test
+df_test_Oct['month'] = 10
 df_test_Oct = df_test_Oct[x_train.columns]
 df_test_Oct.to_csv('OctTest.csv', index = False)
 
+df_test_Nov = df_test
 df_test_Nov = df_test_Nov['month'] = 11
 df_test_Nov = df_test_Nov[x_train.columns]
 df_test_Nov.to_csv('NovTest.csv', index = False)
 
+df_test_Dec = df_test
 df_test_Dec = df_test_Dec['month'] = 12
 df_test_Dec = df_test_Dec[x_train.columns]
 df_test_Dec.to_csv('DecTest.csv', index = False)
