@@ -1,10 +1,7 @@
 import pandas as pd
-from sklearn.model_selection import KFold, cross_val_score
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import Imputer
 import xgboost as xgb
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 from ZK import ZKTools
 
@@ -30,8 +27,20 @@ rf_params = {
     'max_features' : 'sqrt',
     'verbose': 0
     }
-rf = RandomForestRegressor(random_state = random_state, **rf_params) 
+rf = RandomForestRegressor(random_state = random_state, **rf_params)
 rf_CV = ZKTools.CV(df_train = df_train_imp, df_target = df_target, n_splits = 10, model = rf, params = rf_params)
 mae_mean, mae_std = rf_CV.cross_validate()
-print('RF MAE: {} ({})'.format(mae_mean, mae_std))
+rf_CV.report('rf', '6_17_v1', mae_mean, mae_std)
+
+xgb_params = {
+    'n_estimators' : n_estimators,
+    'learning_rate' : 0.02,
+    'max_depth' : 6,
+    'objective' : 'reg:linear',
+    'silent' : True
+    }
+xgb = xgb.XGBRegressor(**xgb_params)
+xgb_CV = ZKTools.CV(df_train = df_train_imp, df_target = df_target, n_splits = 10, model = xgb, params = xgb_params)
+mae_mean, mae_std = xgb_CV.cross_validate()
+xgb_CV.report('xgb', '6_17_v1', mae_mean, mae_std)
 
